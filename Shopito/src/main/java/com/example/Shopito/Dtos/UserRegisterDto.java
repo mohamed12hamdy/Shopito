@@ -20,5 +20,6 @@ public class UserRegisterDto {
     @NotBlank(message = "Password can't be  empty,please enter your password")
     private String password;
 
-    private Role role = Role.USER;
+
+
 }
