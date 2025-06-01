@@ -1,5 +1,6 @@
-package com.example.Shopito.Entities;
+package com.example.Shopito.Entities.cart;
 
+import com.example.Shopito.Entities.users;
 import jakarta.persistence.*;
 import lombok.Data;
 

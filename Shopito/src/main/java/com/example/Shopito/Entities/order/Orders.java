@@ -1,5 +1,7 @@
-package com.example.Shopito.Entities;
+package com.example.Shopito.Entities.order;
 
+import com.example.Shopito.Entities.Status;
+import com.example.Shopito.Entities.users;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
