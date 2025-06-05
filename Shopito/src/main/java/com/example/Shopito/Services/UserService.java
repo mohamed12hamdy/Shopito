@@ -31,7 +31,6 @@ public class UserService {
          user.setUsername(dto.getUsername());
          user.setEmail(dto.getEmail());
          user.setPassword(passwordEncoder.encode(dto.getPassword()));
-
          return userRepository.save(user);
     }
     public UserResponseDto  getUserById(int id){

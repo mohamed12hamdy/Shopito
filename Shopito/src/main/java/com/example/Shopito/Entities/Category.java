@@ -9,6 +9,9 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Data
@@ -18,7 +21,8 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
+
 
     private String name;
 
@@ -30,5 +34,8 @@ public class Category {
     @LastModifiedDate
     @Column(nullable = false)
     private LocalDateTime updated_at;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Product> products = new ArrayList<>();
 
 }

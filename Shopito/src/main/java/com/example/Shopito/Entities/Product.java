@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -12,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  int id;
+    private int id;
 
     @Column(nullable = false)
     private String name;
@@ -27,7 +30,10 @@ public class Product {
 
     private String image;
     @ManyToOne
-    @JoinColumn(name = "category_id",nullable = false)
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
+
+
+
 
 }

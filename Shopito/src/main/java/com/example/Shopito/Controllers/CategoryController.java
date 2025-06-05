@@ -8,10 +8,9 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -45,6 +44,32 @@ public class CategoryController {
 
     }
 
+
+    @GetMapping("/categories")
+    public ResponseEntity<List<?>>GetAllCategories(){
+
+        List<Category>result = categoryService.GetAll();
+        List<CategoryResponseDto>response = new ArrayList<>();
+
+        for(Category category : result){
+            CategoryResponseDto dto = new CategoryResponseDto();
+            dto.setId(category.getId());
+            dto.setName(category.getName());
+            dto.setDescription(category.getDescription());
+            response.add(dto);
+
+        }
+        return ResponseEntity.ok(response);
+
+    }
+
+
+    @DeleteMapping("/categories/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> DeleteCategoryById(@PathVariable int id){
+         categoryService.DeleteCategoryById(id);
+         return ResponseEntity.ok("Category deleted successfully.");
+    }
 
 
 
