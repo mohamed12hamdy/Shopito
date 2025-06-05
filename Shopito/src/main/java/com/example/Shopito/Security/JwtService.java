@@ -16,19 +16,9 @@ import java.util.Map;
 @Service
 public class JwtService {
 
-    private final String secretKey;
+    private final String secretKey = Base64.getUrlEncoder().encodeToString("your-256-bit-secret-your-256-bit-secret".getBytes());
 
-    // Constructor to generate the secret key dynamically
-    public JwtService() throws NoSuchAlgorithmException {
-        this.secretKey = generateSecretKey();
-    }
 
-    // Generate secret key using HmacSHA256 and encode to Base64 string
-    private String generateSecretKey() throws NoSuchAlgorithmException {
-        KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
-        SecretKey secretKey = keyGen.generateKey();
-        return Base64.getEncoder().encodeToString(secretKey.getEncoded());
-    }
 
     public String generateToken(users user) {
         Map<String, Object> claims = new HashMap<>();
@@ -38,13 +28,13 @@ public class JwtService {
                 .setSubject(user.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 24 hours
-                .signWith(SignatureAlgorithm.HS256, Base64.getDecoder().decode(secretKey))
+                .signWith(SignatureAlgorithm.HS256, Base64.getUrlDecoder().decode(secretKey))
                 .compact();
     }
 
     public String extractUsername(String token) {
         return Jwts.parser()
-                .setSigningKey(Base64.getDecoder().decode(secretKey))
+                .setSigningKey(Base64.getUrlDecoder().decode(secretKey))
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
