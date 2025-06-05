@@ -1,5 +1,6 @@
 package com.example.Shopito.Controllers;
 
+import com.example.Shopito.Dtos.LoginRequestDto;
 import com.example.Shopito.Dtos.UserRegisterDto;
 import com.example.Shopito.Dtos.UserResponseDto;
 import com.example.Shopito.Entities.users;
@@ -25,10 +26,11 @@ public class AuthController {
         UserResponseDto responseDTO = service.getUserById(user.getId());
         return ResponseEntity.ok(responseDTO);
     }
-
-
-
-
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@Valid @RequestBody LoginRequestDto request) {
+        String token = service.loginUser(request);
+        return ResponseEntity.ok(token);
+    }
 
 
 }

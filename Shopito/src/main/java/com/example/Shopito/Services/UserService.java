@@ -1,11 +1,13 @@
 package com.example.Shopito.Services;
 
+import com.example.Shopito.Dtos.LoginRequestDto;
 import com.example.Shopito.Dtos.UserRegisterDto;
 import com.example.Shopito.Dtos.UserResponseDto;
 import com.example.Shopito.Entities.users;
 import com.example.Shopito.Exceptions.UserAlreadyExists;
 import com.example.Shopito.Exceptions.UserNotFoundException;
 import com.example.Shopito.Repositories.UserRepository;
+import com.example.Shopito.Security.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,8 @@ public class UserService {
      @Autowired
     private UserRepository userRepository;
 
+     @Autowired
+     private JwtService jwtService;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -41,6 +45,18 @@ public class UserService {
         return userResponseDto;
 
     }
+
+    public String loginUser(LoginRequestDto request) {
+        users user = userRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid credentials");
+        }
+
+        return jwtService.generateToken(user);
+    }
+
 
 
 }
