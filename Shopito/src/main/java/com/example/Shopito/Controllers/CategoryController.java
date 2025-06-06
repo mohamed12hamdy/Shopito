@@ -4,6 +4,7 @@ import com.example.Shopito.Dtos.CategoryRequestDto;
 import com.example.Shopito.Dtos.CategoryResponseDto;
 import com.example.Shopito.Entities.Category;
 import com.example.Shopito.Services.CategoryService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,10 @@ public class CategoryController {
 
 
 
-
+    @Operation(
+            summary = "Add new category (Admin only)",
+            description = "Allows an admin to create a new category by providing the necessary category details."
+    )
     @PostMapping("/admin/categories")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?>AddCategory( @Valid  @RequestBody CategoryRequestDto dto){
@@ -44,7 +48,10 @@ public class CategoryController {
 
     }
 
-
+    @Operation(
+            summary = "Get all categories",
+            description = "Retrieves a list of all available categories."
+    )
     @GetMapping("/categories")
     public ResponseEntity<List<?>>GetAllCategories(){
 
@@ -63,7 +70,7 @@ public class CategoryController {
 
     }
 
-
+    @Operation(summary = "Delete category by ID", description = "Deletes a category using its ID")
     @DeleteMapping("/categories/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> DeleteCategoryById(@PathVariable int id){
