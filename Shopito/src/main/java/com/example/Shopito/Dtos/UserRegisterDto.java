@@ -1,7 +1,5 @@
 package com.example.Shopito.Dtos;
 
-import com.example.Shopito.Entities.Role;
-import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

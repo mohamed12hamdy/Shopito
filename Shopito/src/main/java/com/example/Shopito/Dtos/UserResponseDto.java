@@ -1,6 +1,6 @@
 package com.example.Shopito.Dtos;
 
-import com.example.Shopito.Entities.Role;
+import com.example.Shopito.Entities.Enums.Role;
 import lombok.Data;
 
 @Data

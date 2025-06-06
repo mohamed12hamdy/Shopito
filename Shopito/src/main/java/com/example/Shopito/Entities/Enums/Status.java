@@ -1,4 +1,4 @@
-package com.example.Shopito.Entities;
+package com.example.Shopito.Entities.Enums;
 
 public enum Status {
     PENDING,

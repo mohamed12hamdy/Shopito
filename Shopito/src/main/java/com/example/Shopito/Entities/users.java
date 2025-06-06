@@ -1,5 +1,6 @@
 package com.example.Shopito.Entities;
 
+import com.example.Shopito.Entities.Enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
