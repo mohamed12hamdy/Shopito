@@ -20,5 +20,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String>handleProductAlreadyExist(ProductAlreadyExist ex){
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(ProductNotFound.class)
+    public ResponseEntity<String>handleProductNotFound(ProductNotFound ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
 
 }

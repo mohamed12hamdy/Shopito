@@ -4,6 +4,7 @@ import com.example.Shopito.Dtos.ProductRequestDto;
 import com.example.Shopito.Entities.Category;
 import com.example.Shopito.Entities.Product;
 import com.example.Shopito.Exceptions.ProductAlreadyExist;
+import com.example.Shopito.Exceptions.ProductNotFound;
 import com.example.Shopito.Repositories.CategoryRepository;
 import com.example.Shopito.Repositories.productRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,7 @@ public class ProductService {
 
     private Product convertToEntity(ProductRequestDto dto){
         Product product = new Product();
-
+        product.setId(dto.getId());
         product.setName(dto.getName());
         product.setDescription(dto.getDescription());
         product.setPrice(dto.getPrice());
@@ -73,7 +74,7 @@ public class ProductService {
 
     private ProductRequestDto convertToDTO(Product product){
          ProductRequestDto dto = new ProductRequestDto();
-
+        dto.setId(product.getId());
         dto.setName(product.getName());
         dto.setDescription(product.getDescription());
         dto.setPrice(product.getPrice());
@@ -131,6 +132,27 @@ public class ProductService {
      }
 
    }
+
+   public ProductRequestDto GetProductById(int id){
+       return repository.findById(id)
+               .map(product -> convertToDTO(product))
+               .orElseThrow(() -> new ProductNotFound("Product not found with id: " + id));
+   }
+    public List<ProductRequestDto> GetProductsByCategoryName(String name) {
+        return repository.findByCategoryName(name)
+                .stream()
+                .map(product -> new ProductRequestDto(
+                        product.getId(),
+                        product.getName(),
+                        product.getDescription(),
+                        product.getPrice(),
+                        product.getQuantity(),
+                        product.getImage(),
+                        product.getCategory().getId()
+                ))
+                .collect(Collectors.toList());
+    }
+
 
 
 }
