@@ -17,8 +17,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -83,9 +85,9 @@ public class ProductService {
     }
 
 
-    public boolean update(int id, ProductRequestDto dto){
+    public boolean update(int id, ProductRequestDto dto) {
         Product optionalProduct = repository.findById(id).orElse(null);
-        if(optionalProduct != null){
+        if (optionalProduct != null) {
 
             optionalProduct.setName(dto.getName());
             optionalProduct.setDescription(dto.getDescription());
@@ -95,14 +97,40 @@ public class ProductService {
 
             repository.save(optionalProduct);
             return true;
-        }
-        else{
+        } else {
             return false;
         }
-
-
-
     }
+
+    public List<ProductRequestDto> GetAllProducts() {
+        List<Product> products = repository.findAll();
+       /// l2n el reop btrg3 products f a7na b3deen 7wlna mn products to productsDto, 3n tre2 el streams
+
+        return products.stream()
+                .map(product -> new ProductRequestDto(
+                        product.getId(),
+                        product.getName(),
+                        product.getDescription(),
+                        product.getPrice(),
+                        product.getQuantity(),
+                        product.getImage(),
+                        product.getCategory().getId()
+                ))
+                .collect(Collectors.toList());
+    }
+
+
+   public boolean DeleteProductById(int id){
+     Optional<Product>optionalProduct = repository.findById(id);
+     if(optionalProduct.isPresent()){
+         repository.deleteById(id);
+         return true;
+     }
+     else{
+         return false;
+     }
+
+   }
 
 
 }
