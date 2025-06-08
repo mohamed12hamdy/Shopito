@@ -60,7 +60,7 @@ public class ProductController {
             summary = "GetAll products",
             description = "This endpoint used to to get all products."
     )
-    @GetMapping
+    @GetMapping("/products")
 
     public ResponseEntity<List<ProductRequestDto>>GetAllProducts(){
         return ResponseEntity.ok(service.GetAllProducts());

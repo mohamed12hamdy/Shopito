@@ -1,6 +1,7 @@
 package com.example.Shopito.Security;
 
 import com.example.Shopito.Entities.users;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class JwtService {
     public String generateToken(users user) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", user.getRole().name());
+        claims.put("userId", user.getId());
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(user.getUsername())
@@ -39,6 +41,15 @@ public class JwtService {
                 .getBody()
                 .getSubject();
     }
+    public Integer extractUserId(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(Base64.getUrlDecoder().decode(secretKey))
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.get("userId", Integer.class);
+    }
+
 
     public boolean isTokenValid(String token, users user) {
         final String username = extractUsername(token);
