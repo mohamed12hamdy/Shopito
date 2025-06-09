@@ -14,6 +14,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ReviewService {
     @Autowired
@@ -45,6 +48,20 @@ public class ReviewService {
         responseDto.setProductId(review.getProduct().getId());
         return responseDto;
 
+    }
+
+    public List<ReviewResponseDto> GetAllReviews(int productId){
+        List<Review> reviews = repository.findByProductId(productId);
+
+        return reviews.stream()
+                .map(review -> new ReviewResponseDto(
+                        review.getId(),
+                        review.getRating(),
+                        review.getComment(),
+                        review.getUser().getUsername(),
+                        review.getProduct().getId()
+                ))
+                .collect(Collectors.toList());
     }
 
 
