@@ -1,6 +1,5 @@
-package com.example.Shopito.Dtos;
+package com.example.Shopito.Dtos.Review;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,16 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class ReviewRequestDto {
-
-
-
+public class ReviewResponseDto {
+    private int id;
     private int rating;
     private String comment;
-
-
-
+    private String username;
 
     private int productId;
 

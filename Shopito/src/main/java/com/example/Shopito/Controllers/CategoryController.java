@@ -1,7 +1,7 @@
 package com.example.Shopito.Controllers;
 
-import com.example.Shopito.Dtos.CategoryRequestDto;
-import com.example.Shopito.Dtos.CategoryResponseDto;
+import com.example.Shopito.Dtos.Category.CategoryRequestDto;
+import com.example.Shopito.Dtos.Category.CategoryResponseDto;
 import com.example.Shopito.Entities.Category;
 import com.example.Shopito.Services.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;

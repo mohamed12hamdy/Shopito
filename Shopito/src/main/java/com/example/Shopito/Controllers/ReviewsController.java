@@ -1,8 +1,9 @@
 package com.example.Shopito.Controllers;
 
-import com.example.Shopito.Dtos.ReviewRequestDto;
-import com.example.Shopito.Dtos.ReviewResponseDto;
+import com.example.Shopito.Dtos.Review.ReviewRequestDto;
+import com.example.Shopito.Dtos.Review.ReviewResponseDto;
 import com.example.Shopito.Services.ReviewService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,20 @@ public class ReviewsController {
     @Autowired
    private ReviewService service;
 
+    @Operation(
+            summary = "Add review",
+            description = "This endpoint used to add review for a certain product."
+    )
     @PostMapping("/products/{id}/review")
     public ResponseEntity<?>AddReview(@PathVariable int id, @Valid @RequestBody ReviewRequestDto dto, HttpServletRequest request){
         ReviewResponseDto answer = service.AddReview(id,dto,request);
         return ResponseEntity.ok(answer);
 
     }
+    @Operation(
+            summary = "Get all reviews",
+            description = "Get all reviews product for a certain product."
+    )
     @GetMapping("/products/{productId}/reviews")
     public ResponseEntity<List<ReviewResponseDto>> getProductReviews(@PathVariable int productId) {
         List<ReviewResponseDto> reviews = service.GetAllReviews(productId);

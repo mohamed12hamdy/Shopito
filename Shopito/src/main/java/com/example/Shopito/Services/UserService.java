@@ -1,8 +1,9 @@
 package com.example.Shopito.Services;
 
-import com.example.Shopito.Dtos.LoginRequestDto;
-import com.example.Shopito.Dtos.UserRegisterDto;
-import com.example.Shopito.Dtos.UserResponseDto;
+import com.example.Shopito.Dtos.Login.LoginRequestDto;
+import com.example.Shopito.Dtos.UserManagment.UserManagementResponseDto;
+import com.example.Shopito.Dtos.User.UserRegisterDto;
+import com.example.Shopito.Dtos.User.UserResponseDto;
 import com.example.Shopito.Entities.users;
 import com.example.Shopito.Exceptions.UserAlreadyExists;
 import com.example.Shopito.Exceptions.UserNotFoundException;
@@ -56,6 +57,15 @@ public class UserService {
         return jwtService.generateToken(user);
     }
 
+    public UserManagementResponseDto GetCurrentUserDetails(int userId){
+        users user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        UserManagementResponseDto dto = new UserManagementResponseDto();
+        dto.setUsername(user.getUsername());
+        dto.setEmail(user.getEmail());
+        return dto;
+    }
 
 
 }

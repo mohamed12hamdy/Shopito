@@ -1,8 +1,8 @@
 package com.example.Shopito.Controllers;
 
-import com.example.Shopito.Dtos.LoginRequestDto;
-import com.example.Shopito.Dtos.UserRegisterDto;
-import com.example.Shopito.Dtos.UserResponseDto;
+import com.example.Shopito.Dtos.Login.LoginRequestDto;
+import com.example.Shopito.Dtos.User.UserRegisterDto;
+import com.example.Shopito.Dtos.User.UserResponseDto;
 import com.example.Shopito.Entities.users;
 import com.example.Shopito.Services.UserService;
 import io.swagger.v3.oas.annotations.Operation;

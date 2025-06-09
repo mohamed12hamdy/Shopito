@@ -1,4 +1,4 @@
-package com.example.Shopito.Dtos;
+package com.example.Shopito.Dtos.User;
 
 import com.example.Shopito.Entities.Enums.Role;
 import lombok.Data;

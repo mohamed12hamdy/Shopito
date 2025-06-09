@@ -1,4 +1,4 @@
-package com.example.Shopito.Dtos;
+package com.example.Shopito.Dtos.Category;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

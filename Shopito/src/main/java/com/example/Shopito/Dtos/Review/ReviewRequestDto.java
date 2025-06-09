@@ -1,4 +1,4 @@
-package com.example.Shopito.Dtos;
+package com.example.Shopito.Dtos.Review;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,11 +7,16 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReviewResponseDto {
-    private int id;
+
+public class ReviewRequestDto {
+
+
+
     private int rating;
     private String comment;
-    private String username;
+
+
+
 
     private int productId;
 

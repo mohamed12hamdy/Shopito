@@ -1,7 +1,7 @@
 package com.example.Shopito.Services;
 
-import com.example.Shopito.Dtos.ReviewRequestDto;
-import com.example.Shopito.Dtos.ReviewResponseDto;
+import com.example.Shopito.Dtos.Review.ReviewRequestDto;
+import com.example.Shopito.Dtos.Review.ReviewResponseDto;
 import com.example.Shopito.Entities.Product;
 import com.example.Shopito.Entities.Review;
 import com.example.Shopito.Entities.users;
