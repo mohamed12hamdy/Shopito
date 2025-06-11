@@ -1,6 +1,7 @@
 package com.example.Shopito.Services;
 
 import com.example.Shopito.Dtos.Login.LoginRequestDto;
+import com.example.Shopito.Dtos.UserManagment.UserManagementRequestDto;
 import com.example.Shopito.Dtos.UserManagment.UserManagementResponseDto;
 import com.example.Shopito.Dtos.User.UserRegisterDto;
 import com.example.Shopito.Dtos.User.UserResponseDto;
@@ -65,6 +66,17 @@ public class UserService {
         dto.setUsername(user.getUsername());
         dto.setEmail(user.getEmail());
         return dto;
+    }
+    public void updateUserProfile(Integer userId, UserManagementRequestDto dto){
+
+        users user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        user.setUsername(dto.getUsername());
+        user.setEmail(dto.getEmail());
+
+        userRepository.save(user);
+
     }
 
 
