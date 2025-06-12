@@ -13,6 +13,7 @@ import com.example.Shopito.Exceptions.ProductquantityNotEnough;
 import com.example.Shopito.Repositories.CartItemRepository;
 import com.example.Shopito.Repositories.CartRepository;
 import com.example.Shopito.Repositories.productRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,7 @@ public class CartService {
     @Autowired
     private productRepository repo;
 
+    @Transactional
     public List<CartItemResponseDto>getCartItems(users user)
     {
         Cart cart = cartRepository.findByUser(user)
@@ -55,7 +57,7 @@ public class CartService {
                         item.getQuantity()
                 )).collect(Collectors.toList());
     }
-
+     @Transactional
      public void AddToCart(CartItemRequestDto requestDto, users user){
          Cart userCart = cartRepository.findByUser(user).orElseGet(() -> {
             Cart cart = new Cart();

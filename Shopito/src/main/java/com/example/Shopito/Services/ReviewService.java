@@ -11,6 +11,7 @@ import com.example.Shopito.Repositories.ReviewRepository;
 import com.example.Shopito.Repositories.UserRepository;
 import com.example.Shopito.Repositories.productRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,7 @@ public class ReviewService {
     @Autowired
     private productRepository productRepository;
 
+    @Transactional
     public ReviewResponseDto AddReview(int id, ReviewRequestDto dto, HttpServletRequest request){
         Integer userId = (Integer) request.getAttribute("userId");
 

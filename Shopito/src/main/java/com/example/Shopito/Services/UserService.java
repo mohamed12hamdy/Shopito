@@ -10,6 +10,7 @@ import com.example.Shopito.Exceptions.UserAlreadyExists;
 import com.example.Shopito.Exceptions.UserNotFoundException;
 import com.example.Shopito.Repositories.UserRepository;
 import com.example.Shopito.Security.JwtService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Transactional
     public users registerUser(UserRegisterDto dto){
         if(userRepository.existsByEmail(dto.getEmail())){
            throw  new UserAlreadyExists("This email is already registered");
@@ -67,6 +69,7 @@ public class UserService {
         dto.setEmail(user.getEmail());
         return dto;
     }
+    @Transactional
     public void updateUserProfile(Integer userId, UserManagementRequestDto dto){
 
         users user = userRepository.findById(userId)

@@ -7,6 +7,7 @@ import com.example.Shopito.Exceptions.ProductAlreadyExist;
 import com.example.Shopito.Exceptions.ProductNotFound;
 import com.example.Shopito.Repositories.CategoryRepository;
 import com.example.Shopito.Repositories.productRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +29,7 @@ public class ProductService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+    @Transactional
     public ProductRequestDto createProduct(ProductRequestDto dto,MultipartFile imageFile) throws IOException {
         if (repository.existsByName(dto.getName())) {
             throw new ProductAlreadyExist("Product with this name already exists!");
@@ -82,7 +84,7 @@ public class ProductService {
         return dto;
     }
 
-
+   @Transactional
     public boolean update(int id, ProductRequestDto dto) {
         Product optionalProduct = repository.findById(id).orElse(null);
         if (optionalProduct != null) {
@@ -117,7 +119,7 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-
+   @Transactional
    public boolean DeleteProductById(int id){
      Optional<Product>optionalProduct = repository.findById(id);
      if(optionalProduct.isPresent()){
