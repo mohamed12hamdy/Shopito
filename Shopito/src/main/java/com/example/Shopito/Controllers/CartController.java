@@ -9,10 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,9 +36,18 @@ public class CartController {
             description = "This Endpoint is used to add product to user's cart."
     )
     @PostMapping("/cart")
-    public ResponseEntity<?>AddToCart(@Valid @RequestBody CartItemRequestDto requestDto,@AuthenticationPrincipal users user){
+    public ResponseEntity<?>AddToCart( @RequestBody CartItemRequestDto requestDto,@AuthenticationPrincipal users user){
         cartService.AddToCart(requestDto,user);
         return ResponseEntity.ok("Item added to cart successfully");
+    }
+
+    @PutMapping("/cart/update")
+    public ResponseEntity<?>UpdateProductQuantity(@RequestBody CartItemRequestDto requestDto,@AuthenticationPrincipal users user){
+       boolean updated =       cartService.UpdateProductQuantity(requestDto,user);
+       if(updated) return  ResponseEntity.ok("your cart has been updated");
+
+       else
+           return  ResponseEntity.ok("An Error has occurred");
     }
 
 

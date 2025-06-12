@@ -17,6 +17,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +36,9 @@ public class CartService {
 
     @Autowired
     private productRepository repo;
+
+
+
 
     @Transactional
     public List<CartItemResponseDto>getCartItems(users user)
@@ -100,9 +104,55 @@ public class CartService {
 
 
         }
-
+        //SharedResource
         product.setQuantity(product.getQuantity()- requestDto.getQuantity());
         repo.save(product);
     }
+
+
+    @Transactional
+    public boolean UpdateProductQuantity(CartItemRequestDto requestDto, users user) {
+        Cart userCart = cartRepository.findByUser(user).orElse(null);
+        if (userCart == null) return false;
+
+        Product product = repo.findById(requestDto.getProductId()).orElse(null);
+        if (product == null) return false;
+
+        CartItemId cartItemId = new CartItemId();
+        cartItemId.setCartId(userCart.getId());
+        cartItemId.setProductId(product.getId());
+
+        Optional<CartItem> optionalCartItem = cartItemRepository.findById(cartItemId);
+        if (optionalCartItem.isPresent()) {
+            CartItem cartItem = optionalCartItem.get();
+
+            int oldQuantity = cartItem.getQuantity();
+            int newQuantity = requestDto.getQuantity();
+            int diff = newQuantity - oldQuantity;
+
+            if (diff > 0) {
+
+                if (product.getQuantity() < diff) {
+                    return false;
+                }
+                product.setQuantity(product.getQuantity() - diff);
+            } else if (diff < 0) {
+
+                product.setQuantity(product.getQuantity() + Math.abs(diff));
+            }
+
+            cartItem.setQuantity(newQuantity);
+
+            cartItemRepository.save(cartItem);
+            repo.save(product);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
+
 
 }
