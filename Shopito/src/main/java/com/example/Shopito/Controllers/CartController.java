@@ -41,6 +41,10 @@ public class CartController {
         return ResponseEntity.ok("Item added to cart successfully");
     }
 
+    @Operation(
+            summary = "Update product",
+            description = "This endpoint used to update the quantity needed by a user."
+    )
     @PutMapping("/cart/update")
     public ResponseEntity<?>UpdateProductQuantity(@RequestBody CartItemRequestDto requestDto,@AuthenticationPrincipal users user){
        boolean updated =       cartService.UpdateProductQuantity(requestDto,user);
@@ -52,6 +56,11 @@ public class CartController {
 
 
 
+    @DeleteMapping("/cart/remove/{productId}")
+    public ResponseEntity<?>DeleteProductFromCart(@PathVariable int productId,@AuthenticationPrincipal users user){
+         cartService.DeleteProductFromCart(productId,user);
+        return  ResponseEntity.ok("product successfully deleted");
+    }
 
 
 

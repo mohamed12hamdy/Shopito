@@ -151,7 +151,17 @@ public class CartService {
         }
     }
 
-
+    @Transactional
+    public void DeleteProductFromCart(int productId,users user){
+        Cart cart = cartRepository.findByUser(user).orElse(null);
+        if(cart == null){
+            throw  new CartNotFound("cart not found for user");
+        }
+        CartItemId id = new CartItemId();
+        id.setCartId(cart.getId());
+        id.setProductId(productId);
+        cartItemRepository.deleteById(id);
+    }
 
 
 
