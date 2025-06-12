@@ -1,9 +1,12 @@
 package com.example.Shopito.Entities.cart;
 
 import jakarta.persistence.Embeddable;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Objects;
+@Data
 
 @Embeddable
 public class CartItemId implements Serializable {

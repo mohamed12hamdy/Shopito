@@ -1,16 +1,24 @@
 package com.example.Shopito.Services;
 
+import com.example.Shopito.Dtos.cart.CartItemRequestDto;
 import com.example.Shopito.Dtos.cart.CartItemResponseDto;
+import com.example.Shopito.Entities.Product;
 import com.example.Shopito.Entities.cart.Cart;
 import com.example.Shopito.Entities.cart.CartItem;
+import com.example.Shopito.Entities.cart.CartItemId;
 import com.example.Shopito.Entities.users;
 import com.example.Shopito.Exceptions.CartNotFound;
+import com.example.Shopito.Exceptions.ProductNotFound;
+import com.example.Shopito.Exceptions.ProductquantityNotEnough;
 import com.example.Shopito.Repositories.CartItemRepository;
 import com.example.Shopito.Repositories.CartRepository;
+import com.example.Shopito.Repositories.productRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +32,8 @@ public class CartService {
     @Autowired
     private CartItemRepository cartItemRepository;
 
+    @Autowired
+    private productRepository repo;
 
     public List<CartItemResponseDto>getCartItems(users user)
     {
@@ -45,4 +55,52 @@ public class CartService {
                         item.getQuantity()
                 )).collect(Collectors.toList());
     }
+
+     public void AddToCart(CartItemRequestDto requestDto, users user){
+         Cart userCart = cartRepository.findByUser(user).orElseGet(() -> {
+            Cart cart = new Cart();
+            cart.setUser(user);
+            return cartRepository.save(cart);
+        });
+
+
+        Product product = repo.findById(requestDto.getProductId()).orElseThrow(()-> new ProductNotFound("product not found"));
+
+
+         if (product.getQuantity() < requestDto.getQuantity()) {
+             throw new ProductquantityNotEnough("Not enough stock available");
+         }
+
+        CartItemId id = new CartItemId();   //dh kda composite primarykey
+        id.setCartId(userCart.getId());
+        id.setProductId(product.getId());
+
+        Optional<CartItem> optionalCartItem = cartItemRepository.findById(id);
+
+        if (optionalCartItem.isPresent()) {
+
+            CartItem existingItem = optionalCartItem.get();
+            existingItem.setQuantity(existingItem.getQuantity() + requestDto.getQuantity());
+
+            cartItemRepository.save(existingItem);
+
+
+        }
+        else {
+
+            CartItem item = new CartItem();
+            item.setId(id);
+            item.setCart(userCart);
+            item.setProduct(product);
+            item.setQuantity(requestDto.getQuantity());
+
+            cartItemRepository.save(item);
+
+
+        }
+
+        product.setQuantity(product.getQuantity()- requestDto.getQuantity());
+        repo.save(product);
+    }
+
 }
