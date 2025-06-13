@@ -5,6 +5,7 @@ import com.example.Shopito.Entities.Product;
 import com.example.Shopito.Entities.cart.Cart;
 import com.example.Shopito.Entities.cart.CartItem;
 import com.example.Shopito.Entities.order.OrderItem;
+import com.example.Shopito.Entities.order.OrderItemId;
 import com.example.Shopito.Entities.order.Orders;
 import com.example.Shopito.Entities.users;
 import com.example.Shopito.Repositories.CartRepository;
@@ -24,33 +25,53 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
+
+
     @Autowired
     private OrderItemRepository orderItemRepository;
 
 
-//    @Transactional
-//    public String placeAnOrder(users user){
-//        Cart cart = cartRepository.findByUser(user).orElse(null);
-//        if(cart == null || cart.getItems().isEmpty()){
-//            return "Cart is empty";
-//        }
-//        List<CartItem> cartItems = cart.getItems();
-//        /// kda na m3ia kol cartitems
-//        double total = 0;
-//        Orders order = new Orders();
-//        order.setUser(user);
-//        order.setStatus(Status.PLACED);
-//
-//        List<OrderItem> orderItems = new ArrayList<>();
-//
-//        for(CartItem cartItem : cartItems){
-//            Product product = cartItem.getProduct();
-//            int Quantity = cartItem.getQuantity();
-//            double price = product.getPrice();
-//            OrderItem orderItem = new OrderItem();
-//            orderItem.s
-//        }
-//
-//    }
+    @Transactional
+    public String placeAnOrder(users user){
+
+        Cart cart = cartRepository.findByUser(user).orElse(null);
+        if(cart == null || cart.getItems().isEmpty()){
+            return "Cart is empty";
+        }
+        List<CartItem> cartItems = cart.getItems();
+        /// kda na m3ia kol cartitems
+        double total = 0;
+        Orders order = new Orders();
+        order.setUser(user);
+        order.setStatus(Status.PLACED);
+        order.setTotalAmount(0);
+        order = orderRepository.save(order);
+
+        List<OrderItem> orderItems = new ArrayList<>();
+   /// prodid //orderid
+        for(CartItem cartItem : cartItems){
+            Product product = cartItem.getProduct();
+            int Quantity = cartItem.getQuantity();
+            double price = product.getPrice();
+            OrderItem orderItem = new OrderItem();
+            OrderItemId orderItemId = new OrderItemId();
+            orderItemId.setOrderId(order.getId());
+            orderItemId.setProductId(product.getId());
+
+            orderItem.setId(orderItemId);
+            orderItem.setOrders(order);
+            orderItem.setProduct(product);
+            orderItem.setPrice(price);
+            orderItem.setQuantity(Quantity);
+            orderItems.add(orderItem);
+            total+=price*Quantity;
+        }
+        order.setTotalAmount(total);
+        order.setItems(orderItems);
+        orderRepository.save(order);
+        cart.getItems().clear();
+        cartRepository.save(cart);
+        return "Your order has been received you will be directed to pay. Total: " + total;
+    }
 
 }

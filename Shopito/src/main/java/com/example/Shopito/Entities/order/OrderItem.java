@@ -16,7 +16,7 @@ public class OrderItem {
 
     @ManyToOne
     @MapsId("orderId")
-   @JoinColumn(name = "order_id",nullable = false)
+    @JoinColumn(name = "order_id",nullable = false)
     private Orders orders;
 
     @ManyToOne

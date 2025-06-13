@@ -1,9 +1,11 @@
 package com.example.Shopito.Entities.order;
 
 import com.example.Shopito.Entities.cart.CartItemId;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Objects;
+@Data
 
 public class OrderItemId implements Serializable {
     private int orderId;
