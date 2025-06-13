@@ -103,4 +103,33 @@ public class OrderService {
 
     }
 
+    public List<OrderResponseDto>GetCurrentUserOrders(users user){
+          List<Orders>CurrentUserOrders = orderRepository.findByUserId(user.getId());
+          List<OrderResponseDto>Answer = new ArrayList<>();
+          if(CurrentUserOrders.isEmpty())
+              return Answer;
+
+          for(Orders order : CurrentUserOrders){
+              OrderResponseDto dto = new OrderResponseDto();
+              dto.setTotalAmount(order.getTotalAmount());
+              dto.setStatus(order.getStatus());
+
+              List<OrderItemDto> itemDtos = order.getItems().stream()
+                      .map(item -> {
+                          OrderItemDto itemDto = new OrderItemDto();
+                          itemDto.setProductName(item.getProduct().getName());
+                          itemDto.setQuantity(item.getQuantity());
+                          itemDto.setPrice(item.getPrice());
+                          return itemDto;
+                      })
+                      .collect(Collectors.toList());
+
+              dto.setItems(itemDtos);
+
+              Answer.add(dto);
+          }
+
+         return Answer;
+    }
+
 }

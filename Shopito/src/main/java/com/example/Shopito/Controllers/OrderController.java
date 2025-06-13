@@ -48,6 +48,11 @@ public class OrderController {
     public ResponseEntity<?>OrderDetails(@PathVariable int id){
         return ResponseEntity.ok(orderService.OrderDetails(id));
     }
+    @GetMapping("/orders")
+    public ResponseEntity<?>GetCurrentUserOrders(@AuthenticationPrincipal users user){
+        return ResponseEntity.ok(orderService.GetCurrentUserOrders(user));
+    }
+
 
 
 
