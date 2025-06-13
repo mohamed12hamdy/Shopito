@@ -25,7 +25,7 @@ import java.util.Map;
 @RequestMapping("/payment")
 public class PaymentController {
 
-    @Value("${stripe.secret.key}")
+   
     private String secretKey;
 
     @Autowired
