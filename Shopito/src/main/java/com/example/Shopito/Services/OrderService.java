@@ -42,16 +42,16 @@ public class OrderService {
             return "Cart is empty";
         }
         List<CartItem> cartItems = cart.getItems();
-        /// kda na m3ia kol cartitems
+
         double total = 0;
         Orders order = new Orders();
         order.setUser(user);
-        order.setStatus(Status.PLACED);
+        order.setStatus(Status.PENDING);
         order.setTotalAmount(0);
         order = orderRepository.save(order);
 
         List<OrderItem> orderItems = new ArrayList<>();
-   /// prodid //orderid
+
         for(CartItem cartItem : cartItems){
             Product product = cartItem.getProduct();
             int Quantity = cartItem.getQuantity();
