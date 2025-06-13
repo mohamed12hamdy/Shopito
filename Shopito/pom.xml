@@ -80,6 +80,13 @@
 			<artifactId>jjwt-api</artifactId>
 			<version>0.11.5</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.stripe</groupId>
+			<artifactId>stripe-java</artifactId>
+			<version>24.6.0</version>
+		</dependency>
+
 		<!-- Jackson needed for JSON to Object conversion -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
