@@ -1,5 +1,7 @@
 package com.example.Shopito.Services;
 
+import com.example.Shopito.Dtos.Order.OrderItemDto;
+import com.example.Shopito.Dtos.Order.OrderResponseDto;
 import com.example.Shopito.Entities.Enums.Status;
 import com.example.Shopito.Entities.Product;
 import com.example.Shopito.Entities.cart.Cart;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -72,6 +75,32 @@ public class OrderService {
         cart.getItems().clear();
         cartRepository.save(cart);
         return "Your order has been received you will be directed to pay. Total: " + total;
+    }
+
+
+
+
+    public OrderResponseDto OrderDetails(int id){
+        Orders order = orderRepository.findById(id).orElse(null);
+        OrderResponseDto dto = new OrderResponseDto();
+        if(order != null){
+            dto.setTotalAmount(order.getTotalAmount());
+            dto.setStatus(order.getStatus());
+
+        }
+        List<OrderItemDto> itemDtos = order.getItems().stream()
+                .map(item -> {
+                    OrderItemDto itemDto = new OrderItemDto();
+                    itemDto.setProductName(item.getProduct().getName());
+                    itemDto.setQuantity(item.getQuantity());
+                    itemDto.setPrice(item.getPrice());
+                    return itemDto;
+                })
+                .collect(Collectors.toList());
+
+        dto.setItems(itemDtos);
+        return dto;
+
     }
 
 }

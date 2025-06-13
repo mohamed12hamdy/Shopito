@@ -17,6 +17,6 @@ public class OrderResponseDto {
 
     private Status status;
 
-    private List<OrderItem> items = new ArrayList<>();
+    private List<OrderItemDto> items;
 
 }

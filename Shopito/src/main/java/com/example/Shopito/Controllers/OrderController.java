@@ -1,5 +1,6 @@
 package com.example.Shopito.Controllers;
 
+import com.example.Shopito.Entities.order.Orders;
 import com.example.Shopito.Entities.users;
 import com.example.Shopito.Services.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,6 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class OrderController {
@@ -22,20 +26,29 @@ public class OrderController {
             description = "This Endpoint is used to place user's order."
     )
     @PostMapping("/orders")
-    public ResponseEntity<?>placeOrder(@AuthenticationPrincipal users user){
+    public ResponseEntity<?> placeOrder(@AuthenticationPrincipal users user) {
         String response = orderService.placeAnOrder(user);
-        if (response.equals("Cart is empty")) {
-            return ResponseEntity.badRequest().body(response);
-        }
-        return ResponseEntity.ok(response);
 
+        Map<String, String> message = new HashMap<>();
+        message.put("message", response);
+
+        if (response.equals("Cart is empty")) {
+            return ResponseEntity.badRequest().body(message);
+        }
+
+        return ResponseEntity.ok(message);
     }
 
 
+    @Operation(
+            summary = "Get Order Details",
+            description = "This Endpoint is used to get order's Details."
+    )
     @GetMapping("/orders/{id}")
     public ResponseEntity<?>OrderDetails(@PathVariable int id){
-
+        return ResponseEntity.ok(orderService.OrderDetails(id));
     }
+
 
 
 }
