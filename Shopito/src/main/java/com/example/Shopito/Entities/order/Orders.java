@@ -1,11 +1,15 @@
 package com.example.Shopito.Entities.order;
 
 import com.example.Shopito.Entities.Enums.Status;
+import com.example.Shopito.Entities.cart.CartItem;
 import com.example.Shopito.Entities.users;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -27,4 +31,7 @@ public class Orders{
     @Column(nullable = false)
     private Status status;
 
+    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, orphanRemoval = true)
+    //if we delete OrderItem from Order it will be also deleted from the DB SIDE
+    private List<OrderItem> items = new ArrayList<>();
 }

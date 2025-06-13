@@ -2,7 +2,7 @@ package com.example.Shopito.Entities.Enums;
 
 public enum Status {
     PENDING,
-    PROCESSING,
+    PLACED,
     SHIPPED,
     DELIVERED,
     CANCELLED,
