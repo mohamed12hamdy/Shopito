@@ -2,6 +2,7 @@ package com.example.Shopito.Controllers;
 
 
 import com.example.Shopito.Dtos.product.ProductRequestDto;
+import com.example.Shopito.Entities.Product;
 import com.example.Shopito.Services.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -144,6 +145,23 @@ public class ProductController {
     @GetMapping("/products/category/{name}")
     public ResponseEntity<List<?>>GetProductByCategory(@PathVariable String name){
         return ResponseEntity.ok(service.GetProductsByCategoryName(name));
+    }
+
+
+    @Operation(
+            summary = "Search products",
+            description = """
+        Search for products by keyword in name or description.
+
+        🔍 The keyword is matched case-insensitively.  
+        🧾 Example: `/products/search?keyword=laptop`  
+        📦 Returns a list of products containing the keyword in either the name or the description.
+    """
+    )
+    @GetMapping("/search")
+    public ResponseEntity<List<?>>searchProducts(String keyword){
+        List<Product> products = service.searchByKeyword(keyword);
+        return ResponseEntity.ok(products);
     }
 
 

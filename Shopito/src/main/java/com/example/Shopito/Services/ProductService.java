@@ -154,4 +154,8 @@ public class ProductService {
 
 
 
+    public List<Product>searchByKeyword(String keyword){
+        return repository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(keyword, keyword);
+    }
+
 }
