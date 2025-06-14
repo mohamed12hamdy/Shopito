@@ -38,6 +38,22 @@ public class PaymentController {
         return total != null ? total : 0.0;
     }
 
+    @Operation(
+            summary = "Checkout and Process Payment",
+            description = """
+        This endpoint processes the user's payment using a Stripe token.  
+        
+        💳 It calculates the total amount required for all pending orders,  
+        compares it to the provided amount, and processes the payment using Stripe.
+
+        ✅ If the payment is successful, all pending orders are marked as **PAID**.  
+        ❌ If the payment amount is insufficient or Stripe throws an error, a proper message is returned.
+
+        🔐 Requires user authentication.
+        💡 Amount must be passed in **cents**, and a valid **Stripe token** must be provided.
+    """
+    )
+
     @Transactional
     @PostMapping("/checkout")
     public ResponseEntity<?> checkout(

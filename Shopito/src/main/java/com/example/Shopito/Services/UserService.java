@@ -1,19 +1,23 @@
 package com.example.Shopito.Services;
 
 import com.example.Shopito.Dtos.Login.LoginRequestDto;
+import com.example.Shopito.Dtos.User.ChangePasswordRequestDto;
 import com.example.Shopito.Dtos.UserManagment.UserManagementRequestDto;
 import com.example.Shopito.Dtos.UserManagment.UserManagementResponseDto;
 import com.example.Shopito.Dtos.User.UserRegisterDto;
 import com.example.Shopito.Dtos.User.UserResponseDto;
 import com.example.Shopito.Entities.users;
+import com.example.Shopito.Exceptions.PasswordMisMatch;
 import com.example.Shopito.Exceptions.UserAlreadyExists;
 import com.example.Shopito.Exceptions.UserNotFoundException;
 import com.example.Shopito.Repositories.UserRepository;
 import com.example.Shopito.Security.JwtService;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class UserService {
@@ -81,6 +85,16 @@ public class UserService {
         userRepository.save(user);
 
     }
+    @Transactional
+    public void ChangePassword(@Valid  @RequestBody ChangePasswordRequestDto requestDto, users user){
+       String OldPassword = requestDto.getOldPassword();
+       String newPassword = requestDto.getNewPassword();
 
-
+       if(!passwordEncoder.matches(OldPassword,user.getPassword())){
+           throw new PasswordMisMatch("Old password is incorrect.");
+       }
+       String newHashedPassword = passwordEncoder.encode(newPassword);
+       user.setPassword(newHashedPassword);
+       userRepository.save(user);
+    }
 }

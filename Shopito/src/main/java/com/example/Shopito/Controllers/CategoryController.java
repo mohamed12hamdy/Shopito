@@ -24,9 +24,16 @@ public class CategoryController {
 
 
     @Operation(
-            summary = "Add new category (Admin only)",
-            description = "Allows an admin to create a new category by providing the necessary category details."
+            summary = "Add New Category (Admin Only)",
+            description = """
+        Creates a new product category in the system.  
+
+        🛡️ **Admin privileges are required.**  
+        📥 Requires category name and optional description.  
+        🚫 If a category with the same name already exists, a conflict error may occur.
+    """
     )
+
     @PostMapping("/admin/categories")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?>AddCategory( @Valid  @RequestBody CategoryRequestDto dto){
@@ -49,9 +56,15 @@ public class CategoryController {
     }
 
     @Operation(
-            summary = "Get all categories",
-            description = "Retrieves a list of all available categories."
+            summary = "Get All Categories",
+            description = """
+        Retrieves a complete list of all product categories available in the system.
+
+        📦 Useful for populating dropdowns, filters, or category navigation in the UI.
+        🔓 Publicly accessible – no authentication required.
+    """
     )
+
     @GetMapping("/categories")
     public ResponseEntity<List<?>>GetAllCategories(){
 
@@ -70,7 +83,17 @@ public class CategoryController {
 
     }
 
-    @Operation(summary = "Delete category by ID", description = "Deletes a category using its ID")
+    @Operation(
+            summary = "Delete Category by ID (Admin Only)",
+            description = """
+        Deletes a specific category from the system using its unique ID.
+
+        🛡️ **Requires admin privileges**  
+        🗑️ Cannot delete a category if it is associated with existing products.  
+        🔐 Authentication and authorization are required.
+    """
+    )
+
     @DeleteMapping("/categories/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> DeleteCategoryById(@PathVariable int id){

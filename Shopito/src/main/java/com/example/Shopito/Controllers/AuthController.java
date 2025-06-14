@@ -22,9 +22,16 @@ public class AuthController {
     private UserService service;
 
     @Operation(
-            summary = "Register a new user",
-            description = "Creates a new user account by providing username, email, and password."
+            summary = "Register a New User",
+            description = """
+        This endpoint allows a new user to register by providing a unique username, a valid email address, and a password.
+
+        📝 Validation is applied on all fields.
+        ⚠️ Email and username must be unique.
+        🔐 Password is stored securely using encryption.
+    """
     )
+
     @PostMapping("/register")
     public ResponseEntity<UserResponseDto>register( @Valid @RequestBody UserRegisterDto userDto){
         users user = service.registerUser(userDto);
@@ -32,9 +39,17 @@ public class AuthController {
         return ResponseEntity.ok(responseDTO);
     }
     @Operation(
-            summary = "Login user",
-            description = "Authenticates a user using email and password and returns a JWT token if successful."
+            summary = "User Login",
+            description = """
+        Authenticates a user using their email and password.
+
+        ✅ If the credentials are valid, a JWT token is returned for authenticated access.
+        ❌ If invalid, an error message will be returned.
+
+        🔐 This endpoint does not require authentication (public).
+    """
     )
+
     @PostMapping("/login")
     public ResponseEntity<String> login(@Valid @RequestBody LoginRequestDto request) {
         String token = service.loginUser(request);

@@ -19,9 +19,17 @@ public class OrderController {
    private OrderService orderService;
 
     @Operation(
-            summary = "Place your order",
-            description = "This Endpoint is used to place user's order."
+            summary = "Place an Order",
+            description = """
+        This endpoint allows the authenticated user to place an order
+        based on the items currently in their cart.
+
+        🛒 The order will include all products added to the user's cart.  
+        📦 Inventory will be updated and an order record will be created.  
+        🔐 Authentication is required.
+    """
     )
+
     @PostMapping("/orders")
     public ResponseEntity<?> placeOrder(@AuthenticationPrincipal users user) {
         String response = orderService.placeAnOrder(user);
@@ -39,12 +47,32 @@ public class OrderController {
 
     @Operation(
             summary = "Get Order Details",
-            description = "This Endpoint is used to get order's Details."
+            description = """
+        This endpoint retrieves the details of a specific order 
+        made by the authenticated user.
+
+        📦 It includes order items, total price, status, and timestamps.  
+        🔐 Authentication is required to access this information.
+    """
     )
+
     @GetMapping("/orders/{id}")
     public ResponseEntity<?>OrderDetails(@PathVariable int id){
         return ResponseEntity.ok(orderService.OrderDetails(id));
     }
+
+    @Operation(
+            summary = "Get Current User's Orders",
+            description = """
+        This endpoint retrieves all orders placed by the currently authenticated user.
+
+        📦 It returns a list of the user's past and current orders.  
+        Each order typically includes order ID, total price, status, and timestamps.
+
+        🔐 Requires authentication.
+    """
+    )
+
     @GetMapping("/orders")
     public ResponseEntity<?>GetCurrentUserOrders(@AuthenticationPrincipal users user){
         return ResponseEntity.ok(orderService.GetCurrentUserOrders(user));

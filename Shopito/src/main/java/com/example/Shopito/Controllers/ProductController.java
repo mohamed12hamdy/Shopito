@@ -23,9 +23,17 @@ public class ProductController {
     private ProductService service;
 
     @Operation(
-            summary = "Add a new product",
-            description = "This endpoint used to add product to the stock by an Admin."
+            summary = "Add a New Product",
+            description = """
+        This endpoint allows an **admin** to add a new product to the store's inventory.
+
+        📦 Requires product details such as name, description, price, quantity, image, category, etc.  
+        🔐 Only users with **ADMIN role** are authorized to access this endpoint.
+        
+        The newly added product will become available for users to view and purchase.
+    """
     )
+
     @PostMapping("/admin/products")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?>createProduct(@RequestPart (value = "product") @Valid ProductRequestDto dto, @RequestPart(value="image",required = false) MultipartFile image) throws IOException {
@@ -34,9 +42,17 @@ public class ProductController {
     }
 
     @Operation(
-            summary = "Update product",
-            description = "This endpoint used to update product by an Admin."
+            summary = "Update an Existing Product",
+            description = """
+        This endpoint allows an **admin** to update the details of an existing product in the inventory.
+
+        🔄 You can update fields such as name, description, price, quantity, image, category, and more.  
+        🔐 Requires authentication and **ADMIN role** authorization.
+
+        This ensures that the product information remains accurate and up-to-date.
+    """
     )
+
     @PutMapping("/admin/products/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?>UpdateProduct( @PathVariable int id,@RequestBody @Valid ProductRequestDto dto){
@@ -53,9 +69,17 @@ public class ProductController {
 
 
     @Operation(
-            summary = "GetAll products",
-            description = "This endpoint used to to get all products."
+            summary = "Get All Products",
+            description = """
+        This endpoint retrieves a list of all available products in the store.
+
+        🛍️ Useful for displaying products on the homepage or product listing page.  
+        📦 Each product includes information like name, price, description, image, and category.
+
+        This endpoint is **publicly accessible** (no authentication required).
+    """
     )
+
     @GetMapping("/products")
 
     public ResponseEntity<List<ProductRequestDto>>GetAllProducts(){
@@ -63,9 +87,17 @@ public class ProductController {
     }
 
     @Operation(
-            summary = "Delete product by id",
-            description = "This endpoint used to delete product by id."
+            summary = "Delete Product by ID",
+            description = """
+        This endpoint allows an **admin** to delete a product from the inventory using its ID.
+
+        🗑️ Once deleted, the product will no longer appear in the product listings.  
+        🔐 Requires authentication and **ADMIN role** authorization.
+
+        Make sure the product ID exists before attempting deletion.
+    """
     )
+
     @DeleteMapping("/admin/products/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?>DeleteProduct(@PathVariable int id){
@@ -80,9 +112,16 @@ public class ProductController {
 
 
     @Operation(
-            summary = "Get product by id",
-            description = "This endpoint used to Get product by id."
+            summary = "Get Product by ID",
+            description = """
+        This endpoint retrieves the details of a specific product using its unique ID.
+
+        🔍 Useful for viewing detailed information about a product, such as its name, description, price, category, and image.
+
+        📦 The product must exist in the database; otherwise, a **404 Not Found** response will be returned.
+    """
     )
+
     @GetMapping("/products/{id}")
     public ResponseEntity<?>GetProductById(@PathVariable  int id){
          return ResponseEntity.ok(service.GetProductById(id));
@@ -90,9 +129,17 @@ public class ProductController {
 
 
     @Operation(
-            summary = "Get All products",
-            description = "This endpoint used to Get all products that belongs to specific category."
+            summary = "Get All Products by Category",
+            description = """
+        This endpoint retrieves all products that belong to a specific category.
+
+        📂 You must provide the category ID or name as a path or query parameter, depending on implementation.  
+        🛍️ Useful for filtering products on category pages.
+
+        Returns a list of matching products, each including details like name, price, description, and image.
+    """
     )
+
 
     @GetMapping("/products/category/{name}")
     public ResponseEntity<List<?>>GetProductByCategory(@PathVariable String name){

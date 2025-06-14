@@ -35,4 +35,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+
+    @ExceptionHandler(PasswordMisMatch.class)
+
+    public ResponseEntity<String>handlePasswordMisMatch(PasswordMisMatch ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
 }
